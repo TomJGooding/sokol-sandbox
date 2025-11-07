@@ -1,0 +1,2 @@
+-I./third_party/sokol
+-DSOKOL_GLCORE
