@@ -1,11 +1,37 @@
 #define SOKOL_IMPL
 #include "sokol_app.h"
+#include "sokol_gfx.h"
+#include "sokol_glue.h"
 
-static void init(void) {}
+static sg_pass_action pass_action;
 
-static void frame(void) {}
+static void init(void) {
+    sg_setup(&(sg_desc){
+        .environment = sglue_environment(),
+    });
 
-static void cleanup(void) {}
+    // a pass action to clear framebuffer to red
+    pass_action = (sg_pass_action){
+        .colors[0] = {
+            .load_action=SG_LOADACTION_CLEAR,
+            .clear_value={1.0f, 0.0f, 0.0f, 1.0f}
+        }
+    };
+}
+
+static void frame(void) {
+    sg_begin_pass(&(sg_pass){
+        .action = pass_action,
+        .swapchain = sglue_swapchain()
+    });
+
+    sg_end_pass();
+    sg_commit();
+}
+
+static void cleanup(void) {
+    sg_shutdown();
+}
 
 static void event(const sapp_event *event) {
     if (event->type == SAPP_EVENTTYPE_KEY_DOWN) {
