@@ -1,2 +1,3 @@
 -I./third_party/sokol
+-I./third_party/nuklear
 -DSOKOL_GLCORE
